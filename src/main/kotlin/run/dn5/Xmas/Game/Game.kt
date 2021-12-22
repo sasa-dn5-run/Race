@@ -3,7 +3,6 @@ package run.dn5.Xmas.Game
 import com.sk89q.worldedit.bukkit.BukkitAdapter
 import com.sk89q.worldedit.math.BlockVector3
 import com.sk89q.worldedit.regions.Region
-import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
@@ -16,14 +15,16 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.scheduler.BukkitRunnable
 import run.dn5.Xmas.MessageUtil
+import run.dn5.Xmas.WorldEditConverter
 import run.dn5.Xmas.Xmas
 
 class Game(
     private val startRegion: Region,
     private val goalRegion: Region,
     private val lobbyRegion: Region,
+    private val prepareRegion: Region,
     val players: MutableList<Player>,
-    val onEnd: (()->Unit)? = null
+    private val onEnd: (()->Unit)? = null
 ): Listener {
 
     private val plugin = Xmas.plugin
@@ -58,6 +59,14 @@ class Game(
     init {
         this.plugin.server.pluginManager.registerEvents(this, this.plugin)
         this.particleRunnable.runTaskTimer(this.plugin, 0, 10)
+
+        val blocks = mutableListOf<BlockVector3>()
+        this.prepareRegion.forEach { blocks.add(it) }
+
+        for (player in this.players) {
+            val block = blocks.random()
+            player.teleport(WorldEditConverter.Location(prepareRegion.world!!, block))
+        }
     }
 
     private fun start(){
@@ -68,6 +77,9 @@ class Game(
             Component.text("Game Start!!!"),
             Component.text("")
         )
+
+        val blocks = mutableListOf<BlockVector3>()
+        this.prepareRegion.forEach { blocks.add(it) }
 
         for (player in this.players) {
             player.showTitle(title)
@@ -108,10 +120,12 @@ class Game(
 
                 for (player in Bukkit.getOnlinePlayers()) {
                     val loc = blocks.random()
-                    player.teleport(Location(BukkitAdapter.adapt(lobbyRegion.world), loc.x.toDouble(), loc.y.toDouble(), loc.z.toDouble()))
+                    player.teleport(WorldEditConverter.Location(lobbyRegion.world!!, loc))
                 }
             }
         }.runTaskLater(this.plugin, 20*5)
+
+        this.onEnd?.invoke()
     }
 
     /**
@@ -124,9 +138,9 @@ class Game(
     @EventHandler
     fun onPlayerMove(event: PlayerMoveEvent){
         if(!this.started) return
-        if(this.startRegion.contains(BlockVector3.at(event.to.x, event.to.y, event.to.z))) {
+        if(this.startRegion.contains(WorldEditConverter.BlockVector3(event.to))) {
         }
-        if(this.goalRegion.contains(BlockVector3.at(event.to.x, event.to.y, event.to.z))){
+        if(this.goalRegion.contains(WorldEditConverter.BlockVector3(event.to))){
             this.goal(event.player)
         }
     }

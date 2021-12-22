@@ -1,4 +1,6 @@
 regions:
   start: {}
   goal: {}
+  lobby: {}
+  prepare: {}
 prepareTime: 10

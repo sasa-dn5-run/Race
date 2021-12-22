@@ -18,6 +18,10 @@ import kotlin.random.Random
 
 class GameManager {
 
+    companion object {
+        val REGION_NAMES = arrayOf("start", "goal", "lobby", "prepare")
+    }
+
     private val plugin: Xmas = Xmas.plugin
 
     private var currentGame: Game? = null
@@ -113,10 +117,15 @@ class GameManager {
      * CommonMethods
      */
     fun startGame(sender: CommandSender?){
+        if(this.currentGame != null){
+            sender?.sendMessage(MessageUtil.warn("ゲームが既に開始されています。"))
+            return
+        }
         val startRegion = this.getRegion("start")
         val goalRegion = this.getRegion("goal")
         val lobbyRegion = this.getRegion("lobby")
-        if(startRegion == null || goalRegion == null || lobbyRegion == null){
+        val prepareRegion = this.getRegion("prepare")
+        if(startRegion == null || goalRegion == null || lobbyRegion == null || prepareRegion == null){
             sender?.sendMessage(MessageUtil.warn("リージョンが設定されていません。"))
             return
         }
@@ -124,6 +133,7 @@ class GameManager {
             startRegion,
             goalRegion,
             lobbyRegion,
+            prepareRegion,
             this.players
         ) {
             this.players.clear()

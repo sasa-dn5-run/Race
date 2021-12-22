@@ -4,6 +4,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
 import org.bukkit.entity.Player
+import run.dn5.Xmas.Game.GameManager
 import run.dn5.Xmas.MessageUtil
 import run.dn5.Xmas.Xmas
 
@@ -25,30 +26,14 @@ class xmas: TabExecutor {
             }
             "set" -> {
                 if(args.size < 2) return false
-                when(args[1]){
-                    "start" -> {
-                        plugin.gameManager.saveRegion("start", sender as Player)
-                    }
-                    "goal" -> {
-                        plugin.gameManager.saveRegion("goal", sender as Player)
-                    }
-                    "lobby" -> {
-                        plugin.gameManager.saveRegion("lobby", sender as Player)
-                    }
+                if(GameManager.REGION_NAMES.contains(args[1])){
+                    plugin.gameManager.saveRegion(args[1], sender as Player)
                 }
             }
             "reset" -> {
                 if(args.size < 2) return false
-                when(args[1]){
-                    "start" -> {
-                        plugin.gameManager.saveRegion("start")
-                    }
-                    "goal" -> {
-                        plugin.gameManager.saveRegion("goal")
-                    }
-                    "lobby" -> {
-                        plugin.gameManager.saveRegion("lobby")
-                    }
+                if(GameManager.REGION_NAMES.contains(args[1])){
+                    plugin.gameManager.saveRegion(args[1])
                 }
             }
             else -> {
@@ -71,10 +56,10 @@ class xmas: TabExecutor {
             2 -> {
                 when(args[0]){
                     "set" -> {
-                        mutableListOf("start", "goal", "lobby")
+                        GameManager.REGION_NAMES.toMutableList()
                     }
                     "reset" -> {
-                        mutableListOf("start", "goal", "lobby")
+                        GameManager.REGION_NAMES.toMutableList()
                     }
                     else -> {
                         mutableListOf()
