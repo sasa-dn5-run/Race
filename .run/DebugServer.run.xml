@@ -4,7 +4,7 @@
     <option name="PROGRAM_PARAMETERS" value="nogui" />
     <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/.debug" />
     <method v="2">
-      <option name="Gradle.BeforeRunTask" enabled="true" tasks="devBuild" externalProjectPath="$PROJECT_DIR$" vmOptions="" scriptParameters="" />
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="preDebug" externalProjectPath="$PROJECT_DIR$" vmOptions="" scriptParameters="" />
     </method>
   </configuration>
 </component>
