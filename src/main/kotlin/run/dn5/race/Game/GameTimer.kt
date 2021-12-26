@@ -1,20 +1,23 @@
-package run.dn5.Xmas.Game
+package run.dn5.race.Game
 
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.Component
 import org.bukkit.scheduler.BukkitRunnable
-import run.dn5.Xmas.Xmas
+import run.dn5.race.Main
 
 class GameTimer(
     private val game: Game
 ) {
 
-    private val plugin = Xmas.plugin
+    private val plugin = Main.plugin
     var time = 0.0
         private set
 
-    private var sec = 0
-    private var min = 0
+    var sec = 0
+        private set
+    var min = 0
+        private set
+
     private val bossBar = BossBar.bossBar(
         Component.text("${"%0,2d".format(this.min)}:${"%0,2d".format(this.sec)}"),
         1f,

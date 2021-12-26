@@ -1,29 +1,27 @@
-package run.dn5.Xmas.Menu
+package run.dn5.race.Menu
 
 import de.themoep.inventorygui.GuiElement
 import de.themoep.inventorygui.InventoryGui
 import de.themoep.inventorygui.StaticGuiElement
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
-import net.kyori.adventure.text.Component
-import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.block.Action
+import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
-import org.bukkit.inventory.Inventory
-import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
-import run.dn5.Xmas.Menu.Item.MenuOpen
-import run.dn5.Xmas.Xmas
+import run.dn5.race.Menu.Item.MenuOpen
+import run.dn5.race.Main
+import run.dn5.race.MessageUtil
 
 class MenuHandler : Listener {
 
-    private val plugin = Xmas.plugin
+    private val plugin = Main.plugin
 
     init {
         this.plugin.server.pluginManager.registerEvents(this, this.plugin)
@@ -33,7 +31,7 @@ class MenuHandler : Listener {
         val guiSetup = arrayOf(
             "         ",
             "         ",
-            "  d b    ",
+            "  d b p  ",
             "         ",
             "         "
         )
@@ -66,6 +64,19 @@ class MenuHandler : Listener {
             },
             "${ChatColor.AQUA}ゲームの参加をキャンセルする。"
         ))
+        gui.addElement(StaticGuiElement(
+            'p',
+            ItemStack(Material.ARMOR_STAND),
+            GuiElement.Action {
+                if(it.whoClicked is Player){
+                    val player = it.whoClicked as Player
+                    player.inventory.close()
+                    player.sendMessage(MessageUtil.info("現在${this.plugin.gameManager.players.size}人のプレイヤーが参加待機中です。"))
+                }
+                return@Action true
+            },
+            "${ChatColor.AQUA}現在の参加待機人数: ${this.plugin.gameManager.players.size}人"
+        ))
         return gui
     }
 
@@ -79,6 +90,8 @@ class MenuHandler : Listener {
 
     @EventHandler
     fun onPlayerInteract(event: PlayerInteractEvent) {
+        if(!(event.action == Action.RIGHT_CLICK_AIR || event.action == Action.RIGHT_CLICK_BLOCK)) return
+
         val player = event.player
         val inv = player.inventory
         if (!MenuOpen.equals(inv.itemInMainHand) && !MenuOpen.equals(inv.itemInOffHand)) return

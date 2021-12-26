@@ -1,15 +1,15 @@
-package run.dn5.Xmas.Game
+package run.dn5.race.Game
 
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.text.Component
 import org.bukkit.scheduler.BukkitRunnable
-import run.dn5.Xmas.Xmas
+import run.dn5.race.Main
 
 class PrepareTimer(
     private val game: Game,
     private val onEnd: (()->Unit)? = null
 ) {
-    private val plugin = Xmas.plugin
+    private val plugin = Main.plugin
 
     private val timerRunnable: BukkitRunnable
     private val bossBar: BossBar

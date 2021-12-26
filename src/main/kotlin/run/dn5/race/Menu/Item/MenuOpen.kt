@@ -1,4 +1,4 @@
-package run.dn5.Xmas.Menu.Item
+package run.dn5.race.Menu.Item
 
 import net.kyori.adventure.text.Component
 import org.bukkit.ChatColor

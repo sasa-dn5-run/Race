@@ -46,7 +46,7 @@ tasks {
 }
 
 bukkit {
-    main = "$group.${rootProject.name}.Xmas"
+    main = "$group.${rootProject.name}.Main"
     apiVersion = "1.18"
     load = BukkitPluginDescription.PluginLoadOrder.POSTWORLD
     authors = listOf("ddPn08")
@@ -54,8 +54,8 @@ bukkit {
     depend = listOf("WorldEdit")
 
     commands {
-        register("xmas"){
-            permission = "Xmas.command.xmas"
+        register("race"){
+            permission = "race.command.race"
         }
     }
 }

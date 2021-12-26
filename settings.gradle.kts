@@ -1,2 +1,1 @@
-rootProject.name = "Xmas"
-include("common")
+rootProject.name = "race"

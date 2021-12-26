@@ -1,15 +1,15 @@
-package run.dn5.Xmas
+package run.dn5.race
 
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
-import run.dn5.Xmas.Command.xmas
-import run.dn5.Xmas.Game.GameManager
-import run.dn5.Xmas.Menu.MenuHandler
+import run.dn5.race.Command.race
+import run.dn5.race.Game.GameManager
+import run.dn5.race.Menu.MenuHandler
 
-class Xmas: JavaPlugin(), Listener {
+class Main: JavaPlugin(), Listener {
 
     companion object {
-        lateinit var plugin: Xmas
+        lateinit var plugin: Main
             private set
     }
 
@@ -17,13 +17,13 @@ class Xmas: JavaPlugin(), Listener {
     lateinit var menuHandler: MenuHandler
 
     override fun onEnable() {
-        Xmas.plugin = this
+        Main.plugin = this
 
         if(!this.dataFolder.exists()){
             this.dataFolder.mkdir()
         }
 
-        this.server.getPluginCommand("xmas")?.setExecutor(xmas())
+        this.server.getPluginCommand("race")?.setExecutor(race())
 
         this.server.pluginManager.registerEvents(this, this)
 

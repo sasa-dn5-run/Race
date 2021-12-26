@@ -1,4 +1,4 @@
-package run.dn5.Xmas
+package run.dn5.race
 
 import org.bukkit.ChatColor
 
